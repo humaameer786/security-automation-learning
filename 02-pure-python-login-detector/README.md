@@ -39,7 +39,9 @@ This represents a possible credential-stuffing pattern: one source IP quickly tr
 │   └── loader.py
 ├── data/
 │   ├── auth_attempts.csv
-│   └── normal_attempts.csv
+│   ├── normal_attempts.csv
+│   ├── malformed_attempts.csv
+│   └── missing_columns.csv
 ├── tests/
 │   ├── __init__.py
 │   └── test_detector.py
@@ -85,6 +87,37 @@ View the command-line help:
 python -m failed_login_detector --help
 ```
 
+## Test validation behaviour
+
+Run the dataset containing malformed rows:
+
+```powershell
+python -m failed_login_detector .\data\malformed_attempts.csv
+```
+
+The invalid rows are skipped, while the valid credential-stuffing activity is still detected.
+
+Run the file with a missing required CSV column:
+
+```powershell
+python -m failed_login_detector .\data\missing_columns.csv
+```
+
+Expected error:
+
+```text
+Error: could not load log file: Missing required CSV column(s): result
+```
+
+The detector validates:
+
+- Required CSV headings
+- Missing values
+- Invalid timestamps
+- Unsupported login results
+- Unexpected extra CSV fields
+- Missing files
+
 ## Expected suspicious finding
 
 The attack sample should flag:
@@ -112,7 +145,7 @@ python -m unittest discover -s tests -v
 Expected result:
 
 ```text
-Ran 2 tests in ...
+Ran 4 tests in ...
 OK
 ```
 

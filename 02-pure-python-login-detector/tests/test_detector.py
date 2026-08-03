@@ -54,6 +54,17 @@ class FailedLoginDetectorTests(unittest.TestCase):
         self.assertEqual(findings[0]["total_attempts"], 6)
         self.assertEqual(findings[0]["unique_users"], 6)
         self.assertEqual(findings[0]["failed_attempts"], 5)
+    
+    def test_missing_required_columns_raise_clear_error(self) -> None:
+    # Build the full path to the deliberately broken CSV file.
+        file_path = PROJECT_ROOT / "data" / "missing_columns.csv"
+
+        # Confirm the loader raises the expected clear validation error.
+        with self.assertRaisesRegex(
+            ValueError,
+            r"Missing required CSV column\(s\): result",
+        ):
+            load_attempts(file_path)
 
 
 if __name__ == "__main__":

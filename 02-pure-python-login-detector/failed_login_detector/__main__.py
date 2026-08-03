@@ -50,8 +50,13 @@ def main() -> None:
         print(f"Error: log file not found: {log_file}")
         return
 
-    # Read the authentication attempts from the CSV file.
-    attempts = load_attempts(log_file)
+    # Try to load and validate the authentication log.
+    try:
+        attempts = load_attempts(log_file)
+    # Show a clear message if the file cannot be read or its CSV structure is invalid.
+    except (OSError, ValueError) as error:
+        print(f"Error: could not load log file: {error}")
+        return
 
     # Group all attempts by their source IP address.
     attempts_by_ip = group_attempts_by_ip(attempts)
