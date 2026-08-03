@@ -54,7 +54,7 @@ Concepts:
 - Input validation
 - Error handling
 
-**Status:** In progress
+**Status:** Done
 
 ---
 
@@ -75,7 +75,7 @@ Concepts:
 - Threshold-based detection
 - Basic unit testing
 
-**Status:** Not started
+**Status:** In progress
 
 ---
 
