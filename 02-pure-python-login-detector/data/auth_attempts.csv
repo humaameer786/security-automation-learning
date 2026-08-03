@@ -1,0 +1,11 @@
+timestamp,username,source_ip,result
+2026-08-02T10:00:00,alice,192.0.2.10,success
+2026-08-02T10:03:00,alice,192.0.2.10,failure
+2026-08-02T10:06:00,bob,198.51.100.20,success
+2026-08-02T10:10:00,charlie,203.0.113.50,failure
+2026-08-02T10:10:40,diana,203.0.113.50,failure
+2026-08-02T10:11:20,elena,203.0.113.50,failure
+2026-08-02T10:12:00,farah,203.0.113.50,failure
+2026-08-02T10:12:40,george,203.0.113.50,failure
+2026-08-02T10:13:20,harry,203.0.113.50,success
+2026-08-02T10:20:00,irene,198.51.100.30,failure
