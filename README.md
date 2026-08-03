@@ -75,7 +75,7 @@ Concepts:
 - Threshold-based detection
 - Basic unit testing
 
-**Status:** In progress
+**Status:** Done
 
 ---
 
