@@ -91,3 +91,38 @@ def analyze_window(
         "failed_attempts": failed_attempts,
         "failure_rate": failure_rate,
     }
+
+# Detect suspicious IP addresses
+def detect_suspicious_ips(
+    attempts_by_ip: dict[str, list[dict[str, object]]],
+    min_unique_users: int = 5,
+    min_failure_rate: float = 0.80,
+    window_minutes: int = 5,
+) -> list[dict[str, object]]:
+    suspicious_ips = []
+
+    for source_ip, ip_attempts in attempts_by_ip.items():
+        windows = build_time_windows(
+            ip_attempts,
+            window_minutes=window_minutes,
+        )
+
+        for window in windows:
+            analysis = analyze_window(window)
+
+            if (
+                analysis["unique_users"] >= min_unique_users
+                and analysis["failure_rate"] >= min_failure_rate
+            ):
+                suspicious_ips.append(
+                    {
+                        "source_ip": source_ip,
+                        "window_start": get_attempt_timestamp(window[0]),
+                        "window_end": get_attempt_timestamp(window[-1]),
+                        **analysis,
+                    }
+                )
+
+                break
+
+    return suspicious_ips
