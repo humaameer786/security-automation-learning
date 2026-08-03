@@ -36,6 +36,24 @@ class FailedLoginDetectorTests(unittest.TestCase):
         findings = detect_from_file("normal_attempts.csv")
 
         self.assertEqual(findings, [])
+        
+    def test_malformed_rows_are_skipped_safely(self) -> None:
+    # Load and analyze the dataset containing both valid and invalid rows.
+        findings = detect_from_file("malformed_attempts.csv")
+
+        # The valid attack records should still produce exactly one finding.
+        self.assertEqual(len(findings), 1)
+
+        # Confirm that the correct synthetic IP address was detected.
+        self.assertEqual(
+            findings[0]["source_ip"],
+            "203.0.113.50",
+        )
+
+        # Only the six valid attack attempts should reach the detector.
+        self.assertEqual(findings[0]["total_attempts"], 6)
+        self.assertEqual(findings[0]["unique_users"], 6)
+        self.assertEqual(findings[0]["failed_attempts"], 5)
 
 
 if __name__ == "__main__":
