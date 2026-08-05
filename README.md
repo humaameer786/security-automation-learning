@@ -96,7 +96,7 @@ Concepts:
 
 The Pandas detector will be compared with the pure-Python version to confirm that both produce the same results.
 
-**Status:** Not started
+**Status:** In progress
 
 ---
 
