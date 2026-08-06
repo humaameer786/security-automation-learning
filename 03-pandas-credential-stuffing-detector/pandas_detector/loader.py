@@ -1,9 +1,7 @@
 from pathlib import Path
-# pandas is used to load and analyze tabular log data.
 import pandas as pd
 
 def load_authentication_logs(file_path: Path) -> pd.DataFrame:
-    """Load authentication logs from a CSV file into a Pandas DataFrame."""
     # Read the CSV file and store its rows and columns in a DataFrame.
     logs = pd.read_csv(file_path)
 
