@@ -44,7 +44,7 @@ class TestCommandLineInterface(unittest.TestCase):
                 text=True,
                 check=False,
             )
-
+            # check that the command completed successfully and the output file was created
             self.assertEqual(
                 result.returncode,
                 0,
