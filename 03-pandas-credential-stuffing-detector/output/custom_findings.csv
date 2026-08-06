@@ -1,0 +1,2 @@
+source_ip,window_start,window_end,total_attempts,unique_users,failed_attempts,failure_rate
+203.0.113.50,2026-08-02 10:10:00,2026-08-02 10:15:00,6,6,5,0.8333333333333334

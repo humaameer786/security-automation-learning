@@ -1,75 +1,105 @@
+import argparse
 from pathlib import Path
+
 from pandas_detector.detector import (
     build_five_minute_summary,
+    calculate_failure_metrics,
     count_attempts_by_ip,
     count_unique_users_by_ip,
-    calculate_failure_metrics,
-    detect_suspicious_windows
+    detect_suspicious_windows,
 )
 from pandas_detector.loader import load_authentication_logs
 from pandas_detector.reporter import export_findings
 
 
+def parse_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Detect possible credential-stuffing activity "
+            "in authentication logs."
+        )
+    )
+    parser.add_argument(
+        "--input",
+        type=Path,
+        default=Path("data/auth_attempts.csv"),
+        help="Path to the authentication log CSV file.",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("output/suspicious_windows.csv"),
+        help="Path where the findings CSV will be saved.",
+    )
+    parser.add_argument(
+        "--window-minutes",
+        type=int,
+        default=5,
+        help="Size of each detection window in minutes.",
+    )
+    parser.add_argument(
+        "--min-unique-users",
+        type=int,
+        default=5,
+        help="Minimum number of unique usernames required.",
+    )
+    parser.add_argument(
+        "--min-failure-rate",
+        type=float,
+        default=0.80,
+        help="Minimum failed-login rate required.",
+    )
+    return parser.parse_args()
+
+
 def main() -> None:
-    log_file = Path("data/auth_attempts.csv")
-    logs = load_authentication_logs(log_file)
-    # build security measurements for each five-minute time window.
-    five_minute_summary = build_five_minute_summary(logs)
-    # apply the credential-stuffing thresholds to the window summaries.
-    suspicious_windows = detect_suspicious_windows(
-    five_minute_summary
-)
-    # define where the suspicious-window report will be saved.
-    output_file = Path(
-        "output/suspicious_windows.csv"
-    )
-    saved_report = export_findings(
-        suspicious_windows,
-        output_file,
-    )
-    # count authentication attempts for every source IP.
+    arguments = parse_arguments()
+
+    logs = load_authentication_logs(arguments.input)
+
     attempt_counts = count_attempts_by_ip(logs)
-    # count distinct usernames attempted by every source IP.
     unique_user_counts = count_unique_users_by_ip(logs)
-    # calculate failed attempts and failure rates for every source IP.
     failure_metrics = calculate_failure_metrics(logs)
-    # display the grouped results.
+
+    summary = build_five_minute_summary(
+        logs,
+        window_minutes=arguments.window_minutes,
+    )
+
+    findings = detect_suspicious_windows(
+        summary,
+        min_unique_users=arguments.min_unique_users,
+        min_failure_rate=arguments.min_failure_rate,
+    )
+
+    saved_report = export_findings(
+        findings,
+        arguments.output,
+    )
+
     print("Authentication attempts by source IP")
     print("------------------------------------")
-    print(attempt_counts)
-    print()
+    print(attempt_counts.to_string())
 
-    # display the number of unique usernames for each source IP.
+    print()
     print("Unique usernames by source IP")
     print("-----------------------------")
-    print(unique_user_counts)
-    print()
+    print(unique_user_counts.to_string())
 
-    # display failure measurements for each source IP.
+    print()
     print("Failure metrics by source IP")
     print("----------------------------")
-    print(failure_metrics)
-    print()
+    print(failure_metrics.to_string())
 
-    # display the five-minute summaries without Pandas row numbers.
-    print("Five-minute authentication summary")
-    print("----------------------------------")
-    print(five_minute_summary.to_string(index=False))
-    
     print()
-
-    # display only the time windows that matched both detection thresholds.
     print("Suspicious credential-stuffing windows")
     print("---------------------------------------")
 
-    if suspicious_windows.empty:
+    if findings.empty:
         print("No suspicious time windows detected.")
     else:
-        print(
-            suspicious_windows.to_string(
-                index=False
-            )
-        )
+        print(findings.to_string(index=False))
+
     print()
     print(f"CSV report saved to: {saved_report.resolve()}")
 
