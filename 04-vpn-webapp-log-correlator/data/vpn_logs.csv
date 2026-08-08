@@ -1,0 +1,4 @@
+timestamp,username,source_ip,assigned_ip,result
+2026-08-08 10:00:00,Patrick Jane,203.0.113.10,10.8.0.10,success
+2026-08-08 10:05:00,Baelor Targaryen,198.51.100.20,10.8.0.20,success
+2026-08-08 10:12:00,Elia Martell,192.0.2.30,10.8.0.30,success
