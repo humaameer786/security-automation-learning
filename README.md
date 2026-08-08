@@ -119,7 +119,7 @@ Concepts:
 - Timestamp comparison
 - Event correlation
 
-**Status:** Not started
+**Status:** In progress
 
 ---
 
@@ -350,10 +350,10 @@ DATABASE_URL=replace_with_your_database_connection
 
 | Stage | Exercise | Status |
 |---:|---|---|
-| 01 | Security Log Parser | In progress |
-| 02 | Pure-Python Failed-Login Detector | Not started |
-| 03 | Pandas Credential-Stuffing Detector | Not started |
-| 04 | VPN and WebApp Log Correlator | Not started |
+| 01 | Security Log Parser | Done |
+| 02 | Pure-Python Failed-Login Detector | Done |
+| 03 | Pandas Credential-Stuffing Detector | Done |
+| 04 | VPN and WebApp Log Correlator | In progress |
 | 05 | SQLite Security Event Store | Not started |
 | 06 | Threat Intelligence IP Enricher | Not started |
 | 07 | PostgreSQL and JSONB | Not started |
