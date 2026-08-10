@@ -104,3 +104,16 @@ def read_authentication_events(
         )
 
     return events
+
+# save security detections to the database
+def save_detections(
+    detections: pd.DataFrame,
+    db_path: Path = DATABASE_PATH,
+) -> None:
+    with sqlite3.connect(db_path) as connection:
+        detections.to_sql(
+            "detections",
+            connection,
+            if_exists="append",
+            index=False,
+        )
