@@ -1,6 +1,8 @@
 from pathlib import Path
 import sqlite3
 
+import pandas as pd
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATABASE_PATH = PROJECT_ROOT / "data" / "security_events.db"
 
@@ -65,3 +67,27 @@ def insert_authentication_event(
         connection.commit()
 
         return cursor.lastrowid
+    
+# read authentication events from the database
+def read_authentication_events(
+    db_path: Path = DATABASE_PATH,
+) -> pd.DataFrame:
+    with sqlite3.connect(db_path) as connection:
+        # runs this SQL query against the database and gives result as a Pandas DataFrame.
+        events = pd.read_sql_query(
+            """
+            select
+                id,
+                timestamp,
+                username,
+                source_ip,
+                source_system,
+                event_type,
+                result
+            from authentication_events
+            order by id
+            """,
+            connection,
+        )
+
+    return events
