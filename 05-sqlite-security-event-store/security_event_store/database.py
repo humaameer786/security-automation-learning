@@ -27,6 +27,19 @@ def create_database(db_path: Path = DATABASE_PATH) -> None:
             )
             """
         )
+        
+        connection.execute(
+            """
+            create table if not exists detections (
+                id integer primary key autoincrement,
+                timestamp text not null,
+                username text not null,
+                detection_type text not null,
+                severity text not null,
+                description text not null
+            )
+            """
+        )
     
         connection.commit()
 
