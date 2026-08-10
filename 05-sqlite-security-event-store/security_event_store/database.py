@@ -1,5 +1,6 @@
 from pathlib import Path
 import sqlite3
+from contextlib import closing
 
 import pandas as pd
 
@@ -13,7 +14,7 @@ def create_database(db_path: Path = DATABASE_PATH) -> None:
         exist_ok=True,
     )
 
-    with sqlite3.connect(db_path) as connection:
+    with closing(sqlite3.connect(db_path)) as connection:
         connection.execute(
             """
             create table if not exists authentication_events (
@@ -54,7 +55,7 @@ def insert_authentication_event(
 ) -> int:
     # insert one authentication event into the database.
 
-    with sqlite3.connect(db_path) as connection:
+    with closing(sqlite3.connect(db_path)) as connection:
         cursor = connection.execute(
             """
             insert into authentication_events (
@@ -85,7 +86,8 @@ def insert_authentication_event(
 def read_authentication_events(
     db_path: Path = DATABASE_PATH,
 ) -> pd.DataFrame:
-    with sqlite3.connect(db_path) as connection:
+    
+    with closing(sqlite3.connect(db_path)) as connection:
         # runs this SQL query against the database and gives result as a Pandas DataFrame.
         events = pd.read_sql_query(
             """
@@ -110,7 +112,8 @@ def save_detections(
     detections: pd.DataFrame,
     db_path: Path = DATABASE_PATH,
 ) -> None:
-    with sqlite3.connect(db_path) as connection:
+    
+    with closing(sqlite3.connect(db_path)) as connection:
         detections.to_sql(
             "detections",
             connection,
