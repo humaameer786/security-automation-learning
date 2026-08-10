@@ -151,7 +151,7 @@ Concepts:
 - Querying suspicious activity
 - Data persistence
 
-**Status:** Not started
+**Status:** Done
 
 ---
 
@@ -354,7 +354,7 @@ DATABASE_URL=replace_with_your_database_connection
 | 02 | Pure-Python Failed-Login Detector | Done |
 | 03 | Pandas Credential-Stuffing Detector | Done |
 | 04 | VPN and WebApp Log Correlator | Done |
-| 05 | SQLite Security Event Store | Not started |
+| 05 | SQLite Security Event Store | Done |
 | 06 | Threat Intelligence IP Enricher | Not started |
 | 07 | PostgreSQL and JSONB | Not started |
 | 08 | Dockerized Security Tool | Not started |

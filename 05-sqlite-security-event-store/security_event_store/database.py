@@ -120,3 +120,26 @@ def save_detections(
             if_exists="append",
             index=False,
         )
+    
+# read security detections from the database
+def read_detections(
+    db_path: Path = DATABASE_PATH,
+) -> pd.DataFrame:
+    
+    with closing(sqlite3.connect(db_path)) as connection:
+        detections = pd.read_sql_query(
+            """
+            select
+                id,
+                timestamp,
+                username,
+                detection_type,
+                severity,
+                description
+            from detections
+            order by id
+            """,
+            connection,
+        )
+
+    return detections
