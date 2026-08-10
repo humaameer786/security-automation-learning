@@ -25,5 +25,43 @@ def create_database(db_path: Path = DATABASE_PATH) -> None:
             )
             """
         )
+    
+        connection.commit()
+
+def insert_authentication_event(
+    timestamp: str,
+    username: str,
+    source_ip: str,
+    source_system: str,
+    event_type: str,
+    result: str,
+    db_path: Path = DATABASE_PATH,
+) -> int:
+    # insert one authentication event into the database.
+
+    with sqlite3.connect(db_path) as connection:
+        cursor = connection.execute(
+            """
+            insert into authentication_events (
+                timestamp,
+                username,
+                source_ip,
+                source_system,
+                event_type,
+                result
+            )
+            values (?, ?, ?, ?, ?, ?)
+            """,
+            (
+                timestamp,
+                username,
+                source_ip,
+                source_system,
+                event_type,
+                result,
+            ),
+        )
 
         connection.commit()
+
+        return cursor.lastrowid
