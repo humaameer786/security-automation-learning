@@ -69,6 +69,7 @@ high
 │   └── database.py
 ├── README.md
 └── requirements.txt
+```
 
 ## Setup
 
