@@ -1,0 +1,2 @@
+username,vpn_timestamp,vpn_source_ip,vpn_assigned_ip,webapp_timestamp,webapp_source_ip,time_difference_minutes,reason
+Baelor Targaryen,2026-08-08 10:05:00,198.51.100.20,10.8.0.20,2026-08-08 10:06:00,10.8.0.99,1.0,"WebApp login occurred within the time window, but the source IP did not match the VPN-assigned IP."
