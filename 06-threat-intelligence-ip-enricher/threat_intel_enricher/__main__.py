@@ -1,4 +1,4 @@
-from threat_intel_enricher.client import get_ip_report
+from threat_intel_enricher.client import get_ip_report, VirusTotalAPIError
 from threat_intel_enricher.config import load_api_key
 from threat_intel_enricher.validator import validate_ip
 from threat_intel_enricher.parser import parse_ip_report
@@ -20,7 +20,7 @@ def main() -> None:
             report
         )
 
-    except ValueError as error:
+    except (VirusTotalAPIError, ValueError) as error:
         print(error)
         return
 
