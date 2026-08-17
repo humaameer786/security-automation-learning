@@ -2,6 +2,7 @@ from threat_intel_enricher.client import get_ip_report, VirusTotalAPIError
 from threat_intel_enricher.config import load_api_key
 from threat_intel_enricher.validator import validate_ip
 from threat_intel_enricher.parser import parse_ip_report
+from threat_intel_enricher.cache import cache_report, get_cached_report
 
 def main() -> None:
     ip_address = input("Enter an IP address: ")
@@ -11,14 +12,24 @@ def main() -> None:
 
         api_key = load_api_key()
 
-        report = get_ip_report(
-            validated_ip,
-            api_key
-        )
+        report = get_cached_report(validated_ip)
+
+        if report is None:
+            report = get_ip_report(
+                validated_ip,
+                api_key
+            )
+
+            cache_report(
+                validated_ip,
+                report
+            )
+
+            print("Source: VirusTotal API")
+        else:
+            print("Source: local cache")
         
-        threat_info = parse_ip_report(
-            report
-        )
+        threat_info = parse_ip_report(report)
 
     except (VirusTotalAPIError, ValueError) as error:
         print(error)
