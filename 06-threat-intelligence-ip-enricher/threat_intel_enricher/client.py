@@ -8,7 +8,7 @@ class VirusTotalAPIError(Exception):
 # request an IP address report
 def get_ip_report(
     ip_address: str,
-    api_key: str,
+    api_key: str
 ) -> dict:
     try:
         response = requests.get(

@@ -180,7 +180,7 @@ Error handling will include:
 - HTTP `429`
 - Unexpected API responses
 
-**Status:** In progress
+**Status:** Done
 
 ---
 
@@ -355,7 +355,7 @@ DATABASE_URL=replace_with_your_database_connection
 | 03 | Pandas Credential-Stuffing Detector | Done |
 | 04 | VPN and WebApp Log Correlator | Done |
 | 05 | SQLite Security Event Store | Done |
-| 06 | Threat Intelligence IP Enricher | In progress |
+| 06 | Threat Intelligence IP Enricher | Done |
 | 07 | PostgreSQL and JSONB | Not started |
 | 08 | Dockerized Security Tool | Not started |
 | 09 | Docker Compose Application and Database | Not started |
